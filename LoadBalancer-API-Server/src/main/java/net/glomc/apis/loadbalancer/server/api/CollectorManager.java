@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class CollectorManager {
@@ -39,11 +38,11 @@ public class CollectorManager {
         for (DataFieldId value : DataFieldId.values()) {
             if (!this.collectors.containsKey(value.getFieldId())) {
                 notFullySetup = true;
-                logger.warning("Collector for " + value.getFieldId() + " is not setup");
+                logger.warning("Collector for " + value.getFieldId() + " is not registered!");
             }
         }
         if (notFullySetup && shouldThrow) {
-            throw new IllegalStateException("Not all collectors are setup");
+            throw new IllegalStateException("Not all needed collectors are registered");
         }
     }
 
