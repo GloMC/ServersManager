@@ -1,5 +1,6 @@
 package net.glomc.apis.loadbalancer.server.api;
 
+import net.glomc.apis.loadbalancer.common.enums.DataFieldId;
 import net.glomc.apis.loadbalancer.server.api.collectors.DataCollector;
 
 import java.util.Collections;
@@ -7,9 +8,12 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class CollectorManager {
     private final ConcurrentHashMap<String, DataCollector> collectors = new ConcurrentHashMap<>();
+    private final Logger logger = Logger.getLogger("CollectorManager");
 
     public boolean register(String fieldId, DataCollector dataCollector) {
         fieldId = fieldId.toLowerCase(Locale.ROOT);
@@ -27,6 +31,19 @@ public class CollectorManager {
             return true;
         } else  {
             return false;
+        }
+    }
+
+    public void testNeededFields(boolean shouldThrow) {
+        boolean notFullySetup = false;
+        for (DataFieldId value : DataFieldId.values()) {
+            if (!this.collectors.containsKey(value.getFieldId())) {
+                notFullySetup = true;
+                logger.warning("Collector for " + value.getFieldId() + " is not setup");
+            }
+        }
+        if (notFullySetup && shouldThrow) {
+            throw new IllegalStateException("Not all collectors are setup");
         }
     }
 
