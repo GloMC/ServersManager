@@ -13,6 +13,7 @@ public class PublishTask implements Runnable {
     public PublishTask(ServersDataSource dataSource, CollectorManager collectorManager) {
         this.dataSource = dataSource;
         this.collectorManager = collectorManager;
+        this.collectorManager.testNeededFields(true);
     }
 
     @Override

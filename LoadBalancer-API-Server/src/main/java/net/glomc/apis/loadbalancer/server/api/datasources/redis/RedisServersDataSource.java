@@ -7,7 +7,7 @@ import redis.clients.jedis.UnifiedJedis;
 import java.time.Instant;
 import java.util.Map;
 
-public class RedisServersDataSource extends ServersDataSource {
+public class RedisServersDataSource extends ServersDataSource implements AutoCloseable {
 
     private final UnifiedJedis unifiedJedis;
 
@@ -18,17 +18,35 @@ public class RedisServersDataSource extends ServersDataSource {
 
     @Override
     public void publishHeartBeat() {
-        unifiedJedis.hset("loadbalancer:: " + groupId + "::heartbeats", serverId, String.valueOf(Instant.now().getEpochSecond()));
+        unifiedJedis.hset("loadbalancer::" + groupId + "::heartbeats", serverId, String.valueOf(Instant.now().getEpochSecond()));
+        // expire data of server after 10 seconds incase death never get called
+        unifiedJedis.expire("loadbalancer::" + groupId + "::data::" + serverId, 10);
+    }
+
+    @Override
+    public void publishHeartBeatDeath() {
+        unifiedJedis.hdel("loadbalancer::" + groupId + "::heartbeats", serverId);
+        unifiedJedis.del("loadbalancer::" + groupId + "::data::" + serverId);
     }
 
     @Override
     public void publishData(Map<String, String> data) {
-        unifiedJedis.hset("loadbalancer:: " + groupId + "::data::" + serverId, data);
-
+        unifiedJedis.hset("loadbalancer::" + groupId + "::data::" + serverId, data);
     }
 
     @Override
-    protected void publishHostAndPort(HostAndPort hostAndPort) {
+    public void publishData(String field, String data) {
+        unifiedJedis.hset("loadbalancer::" + groupId + "::data::" + serverId, field, data);
+    }
 
+    @Override
+    public void publishHostAndPort(HostAndPort hostAndPort) {
+        System.out.println("loadbalancer::" + groupId + "::intetnert_protocol::" + serverId);
+        unifiedJedis.hset("loadbalancer::" + groupId + "::intetnert_protocol::" + serverId, hostAndPort.convertIntoMap());
+    }
+
+    @Override
+    public void close() throws Exception {
+        this.unifiedJedis.close();
     }
 }

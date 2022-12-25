@@ -24,7 +24,7 @@ public class FakeDataSource extends ServersDataSource {
     private final Random random = new Random();
 
     @Override
-    public Map<String, Map<String, String>> getServersCustomData(List<String> servers) {
+    public Map<String, Map<String, String>> getServersData(List<String> servers) {
         HashMap<String, Map<String, String>> serversData = new HashMap<>();
 
         for (String server : servers) {
@@ -34,6 +34,22 @@ public class FakeDataSource extends ServersDataSource {
             serversData.put(server, hashMap);
         }
         return Collections.unmodifiableMap(serversData);
+    }
+
+    @Override
+    public Map<String, String> getServerData(String server) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("online", String.valueOf(random.nextInt(200)));
+        hashMap.put("max-online", String.valueOf(200));
+        return hashMap;
+    }
+
+    @Override
+    public String getSingleServerData(String serverId, String fieldName) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("online", String.valueOf(random.nextInt(200)));
+        hashMap.put("max-online", String.valueOf(200));
+        return hashMap.get(fieldName);
     }
 
     @Override

@@ -3,6 +3,7 @@ plugins {
     id("io.papermc.paperweight.userdev") version "1.4.0"
     id("xyz.jpenilla.run-paper") version "2.0.1"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 repositories {
@@ -11,6 +12,9 @@ repositories {
 
 dependencies {
     paperDevBundle("1.19.3-R0.1-SNAPSHOT")
+    implementation(project(":LoadBalancer-API-Server"))
+    implementation(project(":LoadBalancer-Common"))
+    implementation("redis.clients:jedis:4.3.1")
 
 }
 

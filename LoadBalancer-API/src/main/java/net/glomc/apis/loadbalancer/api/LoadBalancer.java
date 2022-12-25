@@ -16,7 +16,7 @@ public abstract class LoadBalancer {
 
     public String bestServer() {
         try {
-            return bestServer(dataSource.getServersCustomData(dataSource.getHeartBeatingServers()));
+            return bestServer(dataSource.getServersData(dataSource.getHeartBeatingServers()));
         } catch (Exception e) {
             throw new RuntimeException("Problem selecting the best server", e);
         }
