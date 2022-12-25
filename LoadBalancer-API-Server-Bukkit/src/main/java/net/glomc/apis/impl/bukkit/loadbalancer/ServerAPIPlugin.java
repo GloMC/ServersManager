@@ -118,4 +118,8 @@ public class ServerAPIPlugin extends JavaPlugin implements RedisConfigLoader, Ma
     public boolean isMultiPaper() {
         return isMultiPaper;
     }
+
+    public ServersDataSource getDataSource() {
+        return dataSource;
+    }
 }
