@@ -47,7 +47,7 @@ public class MainConfiguration {
         this.serverId = System.getProperty("serverId", serverId);
 
         try {
-            hostAndPort1 = new HostAndPort(System.getProperty("host",  null), port);
+            hostAndPort1 = new HostAndPort(System.getProperty("serverHost",  null), port);
         } catch (Exception e) {
             hostAndPort1 = null;
         }

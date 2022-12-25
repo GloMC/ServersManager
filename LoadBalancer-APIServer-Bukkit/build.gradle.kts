@@ -20,7 +20,7 @@ dependencies {
     implementation("redis.clients:jedis:4.3.1")
     implementation("com.github.puregero:multilib:1.1.9")
     implementation("org.spongepowered:configurate-yaml:3.7.2")
-}
+} 
 
 
 
