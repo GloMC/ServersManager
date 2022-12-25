@@ -3,12 +3,12 @@ package net.glomc.apis.loadbalancer.impl.velocity;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
@@ -27,7 +27,11 @@ public class LoadBalancerAPIPlugin {
 
     @Subscribe
     public void onProxyInitializeEvent(ProxyInitializeEvent event) {
-
+        try {
+            server.getEventManager().register(this, new RedisAutomaticDiscovery(this, "test-stuff"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -42,4 +46,5 @@ public class LoadBalancerAPIPlugin {
     public Path getDataDirectory() {
         return dataDirectory;
     }
+
 }

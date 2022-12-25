@@ -3,6 +3,7 @@ package net.glomc.apis.loadbalancer.common.models;
 
 import net.glomc.apis.loadbalancer.common.utils.ip.InetAddressUtils;
 
+import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,10 +47,11 @@ public record HostAndPort(String host, int port) {
                 throw new IllegalArgumentException("Provided map is invalid");
             }
         }
-        return new HostAndPort(
-                map.get(FieldId.INTERNET_PROTOCOL_ADDRESS.getFieldId()),
-                Integer.parseInt(map.get(FieldId.PORT.fieldId))
-        );
+        return new HostAndPort(map.get(FieldId.INTERNET_PROTOCOL_ADDRESS.getFieldId()), Integer.parseInt(map.get(FieldId.PORT.fieldId)));
+    }
+
+    public InetSocketAddress convertIntoINetSocketAddress() {
+        return InetSocketAddress.createUnresolved(host, port);
     }
 
     @Override

@@ -60,14 +60,15 @@ public class RedisServersDataSource extends ServersDataSource implements AutoClo
     public Map<String, Map<String, String>> getServersData(List<String> serversIds) {
         Map<String, Map<String, String>> data = new HashMap<>();
         if (unifiedJedis instanceof JedisPooled pooled) {
-            Pipeline pipeline = new Pipeline(pooled.getPool().getResource());
-            HashMap<String, Response<Map<String, String>>> responseHashMap = new HashMap<>();
-            for (String serverId : serversIds) {
-                responseHashMap.put(serverId, pipeline.hgetAll("loadbalancer::" + groupId + "::data::" + serverId));
+            try (Connection connection = pooled.getPool().getResource()) {
+                Pipeline pipeline = new Pipeline(connection);
+                HashMap<String, Response<Map<String, String>>> responseHashMap = new HashMap<>();
+                for (String serverId : serversIds) {
+                    responseHashMap.put(serverId, pipeline.hgetAll("loadbalancer::" + groupId + "::data::" + serverId));
+                }
+                pipeline.sync();
+                responseHashMap.forEach((serverId, response) -> data.put(serverId, response.get()));
             }
-            pipeline.sync();
-            pipeline.close();
-            responseHashMap.forEach((serverId, response) -> data.put(serverId, response.get()));
         } else if (unifiedJedis instanceof JedisCluster) {
             ClusterPipeline clusterPipeline = new ClusterPipeline(clusterConnectionProvider);
             HashMap<String, Response<Map<String, String>>> responseHashMap = new HashMap<>();
