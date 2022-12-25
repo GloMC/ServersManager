@@ -10,8 +10,9 @@ import net.glomc.apis.loadbalancer.api.datasources.ServersDataSource;
 import net.glomc.apis.loadbalancer.api.datasources.redis.RedisServersDataSource;
 import net.glomc.apis.loadbalancer.common.config.RedisConfigLoader;
 import net.glomc.apis.loadbalancer.common.models.HostAndPort;
-import net.glomc.apis.loadbalancer.impl.LowCountBalancerSystem;
+import net.glomc.apis.loadbalancer.impl.velocity.exampleloadbalancers.LowCountBalancerSystem;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.providers.ClusterConnectionProvider;
@@ -35,24 +36,19 @@ public class RedisAutomaticDiscovery implements RedisConfigLoader, AutoCloseable
     }
 
     @Subscribe
-    public void onPlayerChooseInitialServerEvent(PlayerChooseInitialServerEvent event) {
-        System.out.println("evemt called");
+    public void onPlayerChooseInitialServerEvent(PlayerChooseInitialServerEvent event) {;
         Player player = event.getPlayer();
         player.sendMessage(Component.text("Selecting a server......"));
         String serverId = loadBalancer.bestServer();
         if (serverId == null) {
             return;
         }
-        System.out.println("1");
+        player.sendMessage(Component.text("Found: " + serverId).color(NamedTextColor.GREEN));
         HostAndPort hostAndPort = loadBalancer.getServerHostAndPort(serverId);
-        System.out.println("2");
         ServerInfo serverInfo = new ServerInfo(serverId, hostAndPort.convertIntoINetSocketAddress());
-        System.out.println("3");
-        RegisteredServer registeredServer = plugin.getServer().createRawRegisteredServer(serverInfo);
-        System.out.println("4");
+        RegisteredServer registeredServer = plugin.getServer().createRawRegisteredServer(serverInfo);;
         event.setInitialServer(registeredServer);
-        System.out.println("5");
-        System.out.println("Player was sent into " + serverId);
+        plugin.getLogger().info("Player "+ event.getPlayer().getUsername() +" was sent into " + serverId);
     }
 
     @Override

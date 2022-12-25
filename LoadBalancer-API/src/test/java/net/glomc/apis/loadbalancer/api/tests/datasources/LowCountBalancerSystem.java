@@ -1,4 +1,4 @@
-package net.glomc.apis.loadbalancer.impl.velocity.exampleloadbalancers;
+package net.glomc.apis.loadbalancer.api.tests.datasources;
 
 
 import net.glomc.apis.loadbalancer.api.LoadBalancer;
