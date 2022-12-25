@@ -1,8 +1,8 @@
 package net.glomc.apis.loadbalancer.api.tests.datasources;
 
-import net.glomc.apis.loadbalancer.LowCountBalancerSystem;
+import net.glomc.apis.loadbalancer.impl.LowCountBalancerSystem;
 import net.glomc.apis.loadbalancer.api.LoadBalancer;
-import net.glomc.apis.loadbalancer.api.models.HostAndPort;
+import net.glomc.apis.loadbalancer.common.models.HostAndPort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,7 @@
-package net.glomc.apis.loadbalancer.api.models;
+package net.glomc.apis.loadbalancer.common.models;
 
-import net.glomc.apis.loadbalancer.api.apacheapis.ip.InetAddressUtils;
+
+import net.glomc.apis.loadbalancer.common.utils.ip.InetAddressUtils;
 
 public record HostAndPort(String host, int port) {
 

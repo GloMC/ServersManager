@@ -1,4 +1,4 @@
-package net.glomc.apis.loadbalancer;
+package net.glomc.apis.loadbalancer.impl;
 
 
 import net.glomc.apis.loadbalancer.api.LoadBalancer;

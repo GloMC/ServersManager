@@ -1,6 +1,6 @@
 package net.glomc.apis.loadbalancer.api.datasources;
 
-import net.glomc.apis.loadbalancer.api.models.HostAndPort;
+import net.glomc.apis.loadbalancer.common.models.HostAndPort;
 
 import java.util.List;
 import java.util.Map;
