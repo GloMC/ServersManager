@@ -41,7 +41,6 @@ public class RedisServersDataSource extends ServersDataSource implements AutoClo
 
     @Override
     public void publishHostAndPort(HostAndPort hostAndPort) {
-        System.out.println("loadbalancer::" + groupId + "::intetnert_protocol::" + serverId);
         unifiedJedis.hset("loadbalancer::" + groupId + "::intetnert_protocol::" + serverId, hostAndPort.convertIntoMap());
     }
 
