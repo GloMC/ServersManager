@@ -28,7 +28,7 @@ public class LoadBalancerAPIPlugin {
     @Subscribe
     public void onProxyInitializeEvent(ProxyInitializeEvent event) {
         try {
-            server.getEventManager().register(this, new RedisAutomaticDiscovery(this, "test-stuff"));
+            server.getEventManager().register(this, new RedisAutomaticDiscovery(this, "development"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

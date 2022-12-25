@@ -21,8 +21,10 @@ dependencies {
 } 
 
 
-
 tasks {
+    runServer {
+        jvmArgs("-DgroupId=development", "-DserverHost=127.0.0.1")
+    }
     assemble {
         dependsOn(reobfJar)
     }

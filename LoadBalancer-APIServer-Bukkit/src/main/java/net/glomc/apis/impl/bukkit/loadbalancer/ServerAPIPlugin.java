@@ -65,6 +65,8 @@ public class ServerAPIPlugin extends JavaPlugin implements RedisConfigLoader, Ma
         } else  {
             throw new RuntimeException("unknown database");
         }
+        getLogger().info("Server id: " + configuration.getServerId());
+        getLogger().info("Group id: " + configuration.getGroupId());
         if (configuration.isPublic()) {
             try {
                 String ip = IpChecker.getPublicAddress();

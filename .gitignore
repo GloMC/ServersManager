@@ -6,7 +6,7 @@ build/
 
 ### run task ###
 LoadBalancer-APIServer-Bukkit/run
-LoadBalancer-API-Velocity/run
+examples/LoadBalancer-API-Velocity/run
 ### IntelliJ IDEA ###
 .idea/*
 *.iws
