@@ -4,9 +4,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### run paper ###
+### run task ###
 LoadBalancer-APIServer-Bukkit/run
-
+LoadBalancer-API-Velocity/run
 ### IntelliJ IDEA ###
 .idea/*
 *.iws
