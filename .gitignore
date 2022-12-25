@@ -5,7 +5,7 @@ build/
 !**/src/test/**/build/
 
 ### run paper ###
-LoadBalancer-API-Server-Bukkit/run
+LoadBalancer-APIServer-Bukkit/run
 
 ### IntelliJ IDEA ###
 .idea/*

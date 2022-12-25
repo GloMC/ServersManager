@@ -8,7 +8,7 @@ pluginManagement {
 
 rootProject.name = "LoadBalanacer-Parent"
 include("LoadBalancer-API")
-include("LoadBalancer-API-Server")
+include("LoadBalancer-APIServer")
 include("LoadBalancer-Common")
-include("LoadBalancer-API-Server-Bukkit")
-include("examples:LoadBalancer-API-Velocity")
+include("LoadBalancer-APIServer-Bukkit")
+include("LoadBalancer-API-Velocity")

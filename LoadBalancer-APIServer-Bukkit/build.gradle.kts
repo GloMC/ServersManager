@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     paperDevBundle("1.19.3-R0.1-SNAPSHOT")
-    implementation(project(":LoadBalancer-API-Server"))
+    implementation(project(":LoadBalancer-APIServer"))
     implementation(project(":LoadBalancer-Common"))
     implementation("redis.clients:jedis:4.3.1")
     implementation("com.github.puregero:multilib:1.1.9")
