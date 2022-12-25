@@ -18,7 +18,7 @@ public class IpChecker {
         }
     }
 
-    public static String getAddress() throws IOException {
+    public static String getPublicAddress() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(ipCheckingUrl.openStream()));
         String ip = in.readLine();
         in.close();

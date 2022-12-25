@@ -17,6 +17,12 @@ public class RedisServersDataSource extends ServersDataSource implements AutoClo
     private final UnifiedJedis unifiedJedis;
     private final ClusterConnectionProvider clusterConnectionProvider;
 
+    public RedisServersDataSource(String groupId,UnifiedJedis unifiedJedis, ClusterConnectionProvider clusterConnectionProvider) {
+        super(groupId);
+        this.unifiedJedis = unifiedJedis;
+        this.clusterConnectionProvider = clusterConnectionProvider;
+    }
+
     public RedisServersDataSource(String groupId, UnifiedJedis unifiedJedis) {
         super(groupId);
         this.unifiedJedis = unifiedJedis;

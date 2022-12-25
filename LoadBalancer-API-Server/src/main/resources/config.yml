@@ -1,0 +1,28 @@
+# you could Pull Request your Implementation of a database into LoadBalancer repository
+# https://github.com/GloMC/LoadBalancer
+# available data sources
+# 1. redis (redis.yml) (Recommended)
+# more coming soon!
+datasource: redis
+
+# group id for your servers
+# must be same on all servers for the load balancer to work
+# example "skyblock" or "test-stuff"
+group-id: "test-stuff"
+
+# your server id
+# you can set this option using startup options
+# note: if MultiPaper is detected this option is ignored.
+# which will use multipaper server name
+server-id: "server-1"
+
+# is the server on the public internet?
+# if yes put true will use Aws ip discovery (http://checkip.amazonaws.com)
+# if false you have to put the server ip to broadcast
+# can be done using the config or startup args
+# false by default
+public: false
+
+
+# DON'T CHANGE!!!!!
+config-version: 1

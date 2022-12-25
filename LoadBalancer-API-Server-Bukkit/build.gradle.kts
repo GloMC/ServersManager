@@ -1,3 +1,5 @@
+import java.net.URL
+
 plugins {
     id("java")
     id("io.papermc.paperweight.userdev") version "1.4.0"
@@ -8,6 +10,7 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://repo.clojars.org/") } // for multilib
 }
 
 dependencies {
@@ -15,7 +18,8 @@ dependencies {
     implementation(project(":LoadBalancer-API-Server"))
     implementation(project(":LoadBalancer-Common"))
     implementation("redis.clients:jedis:4.3.1")
-
+    implementation("com.github.puregero:multilib:1.1.9")
+    implementation("org.spongepowered:configurate-yaml:3.7.2")
 }
 
 
@@ -34,6 +38,10 @@ tasks {
     }
     processResources {
         filteringCharset = Charsets.UTF_8.name()
+    }
+
+    shadowJar {
+        relocate("com.github.puregero.multilib", "net.glomc.apis.impl.bukkit.libs.multilib")
     }
 
 }
