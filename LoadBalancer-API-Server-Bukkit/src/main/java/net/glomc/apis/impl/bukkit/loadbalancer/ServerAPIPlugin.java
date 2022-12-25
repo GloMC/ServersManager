@@ -16,7 +16,6 @@ import java.io.IOException;
 
 public class ServerAPIPlugin extends JavaPlugin {
 
-
     private final CollectorManager collectorManager = new CollectorManager();
     private final ServersDataSource dataSource;
     private BukkitTask task;

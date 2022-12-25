@@ -27,6 +27,7 @@ public class RedisServersDataSource extends ServersDataSource implements AutoClo
     public void publishHeartBeatDeath() {
         unifiedJedis.hdel("loadbalancer::" + groupId + "::heartbeats", serverId);
         unifiedJedis.del("loadbalancer::" + groupId + "::data::" + serverId);
+        unifiedJedis.del("loadbalancer::" + groupId + "::intetnert_protocol::" + serverId);
     }
 
     @Override

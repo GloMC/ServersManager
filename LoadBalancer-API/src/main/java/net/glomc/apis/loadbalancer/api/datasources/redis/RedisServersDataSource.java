@@ -87,7 +87,9 @@ public class RedisServersDataSource extends ServersDataSource implements AutoClo
 
     @Override
     public HostAndPort getServerHostAndPort(String serverId) {
-        return HostAndPort.fromMap(unifiedJedis.hgetAll("loadbalancer::" + groupId + "::intetnert_protocol::" + serverId));
+        Map<String, String> data = unifiedJedis.hgetAll("loadbalancer::" + groupId + "::intetnert_protocol::" + serverId);
+        if ( data == null || data.isEmpty()) return null;
+        return HostAndPort.fromMap(data);
     }
 
     @Override
