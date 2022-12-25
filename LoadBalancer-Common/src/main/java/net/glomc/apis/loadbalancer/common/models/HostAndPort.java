@@ -48,7 +48,7 @@ public record HostAndPort(String host, int port) {
         }
         return new HostAndPort(
                 map.get(FieldId.INTERNET_PROTOCOL_ADDRESS.getFieldId()),
-                Integer.parseInt(FieldId.PORT.fieldId)
+                Integer.parseInt(map.get(FieldId.PORT.fieldId))
         );
     }
 
