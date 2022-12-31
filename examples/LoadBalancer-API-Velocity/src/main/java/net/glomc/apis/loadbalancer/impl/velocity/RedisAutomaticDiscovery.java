@@ -1,5 +1,6 @@
 package net.glomc.apis.loadbalancer.impl.velocity;
 
+import api.datasources.redis.JedisServersDataSource;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import com.velocitypowered.api.proxy.Player;
@@ -7,7 +8,6 @@ import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import net.glomc.apis.loadbalancer.api.LoadBalancer;
 import net.glomc.apis.loadbalancer.api.datasources.ServersDataSource;
-import net.glomc.apis.loadbalancer.api.datasources.redis.RedisServersDataSource;
 import net.glomc.apis.loadbalancer.common.config.RedisConfigLoader;
 import net.glomc.apis.loadbalancer.common.models.HostAndPort;
 import net.glomc.apis.loadbalancer.impl.velocity.exampleloadbalancers.LowCountBalancerSystem;
@@ -53,12 +53,12 @@ public class RedisAutomaticDiscovery implements RedisConfigLoader, AutoCloseable
 
     @Override
     public void handleCluster(ClusterConnectionProvider clusterConnectionProvider) {
-        dataSource = new RedisServersDataSource(groupId, new JedisCluster(clusterConnectionProvider, 60, Duration.ofSeconds(60)));
+        dataSource = new JedisServersDataSource(groupId, new JedisCluster(clusterConnectionProvider, 60, Duration.ofSeconds(60)));
     }
 
     @Override
     public void handlePooled(PooledConnectionProvider pooledConnectionProvider) {
-        dataSource = new RedisServersDataSource(groupId, new JedisPooled(pooledConnectionProvider));
+        dataSource = new JedisServersDataSource(groupId, new JedisPooled(pooledConnectionProvider));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package net.glomc.apis.loadbalancer.api.datasources.redis;
+package api.datasources.redis;
 
 import net.glomc.apis.loadbalancer.api.datasources.ServersDataSource;
 import net.glomc.apis.loadbalancer.common.models.HostAndPort;
@@ -12,18 +12,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RedisServersDataSource extends ServersDataSource implements AutoCloseable {
+public class JedisServersDataSource extends ServersDataSource implements AutoCloseable {
 
     private final UnifiedJedis unifiedJedis;
     private final ClusterConnectionProvider clusterConnectionProvider;
 
-    public RedisServersDataSource(String groupId,UnifiedJedis unifiedJedis, ClusterConnectionProvider clusterConnectionProvider) {
+    public JedisServersDataSource(String groupId, UnifiedJedis unifiedJedis, ClusterConnectionProvider clusterConnectionProvider) {
         super(groupId);
         this.unifiedJedis = unifiedJedis;
         this.clusterConnectionProvider = clusterConnectionProvider;
     }
 
-    public RedisServersDataSource(String groupId, UnifiedJedis unifiedJedis) {
+    public JedisServersDataSource(String groupId, UnifiedJedis unifiedJedis) {
         super(groupId);
         this.unifiedJedis = unifiedJedis;
         if (unifiedJedis instanceof JedisCluster) {
