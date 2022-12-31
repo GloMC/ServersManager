@@ -21,7 +21,7 @@ import redis.clients.jedis.providers.PooledConnectionProvider;
 import java.io.IOException;
 import java.time.Duration;
 
-public class RedisAutomaticDiscovery implements JedisConfigLoader, AutoCloseable {
+public class AutomaticJoinDiscovery implements JedisConfigLoader, AutoCloseable {
 
     private final LoadBalancerAPIPlugin plugin;
 
@@ -29,7 +29,7 @@ public class RedisAutomaticDiscovery implements JedisConfigLoader, AutoCloseable
     private ServersDataSource dataSource;
     private final LoadBalancer loadBalancer;
 
-    public RedisAutomaticDiscovery(LoadBalancerAPIPlugin plugin, String groupId) throws IOException {
+    public AutomaticJoinDiscovery(LoadBalancerAPIPlugin plugin, String groupId) throws IOException {
         this.plugin = plugin;
         this.groupId = groupId;
         loadRedisConfig(plugin.getDataDirectory());
