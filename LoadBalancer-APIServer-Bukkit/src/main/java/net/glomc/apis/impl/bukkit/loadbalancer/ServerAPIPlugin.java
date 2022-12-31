@@ -5,7 +5,8 @@ import net.glomc.apis.loadbalancer.common.models.HostAndPort;
 import net.glomc.apis.loadbalancer.common.utils.ip.IpChecker;
 import net.glomc.apis.loadbalancer.configs.jedis.JedisConfigLoader;
 import net.glomc.apis.loadbalancer.server.api.CollectorManager;
-import net.glomc.apis.loadbalancer.server.api.PublishTask;
+import net.glomc.apis.loadbalancer.server.api.CollectorPublisher;
+import net.glomc.apis.loadbalancer.server.api.HeartbeatTask;
 import net.glomc.apis.loadbalancer.server.api.config.MainConfigLoader;
 import net.glomc.apis.loadbalancer.server.api.config.model.MainConfiguration;
 import net.glomc.apis.loadbalancer.server.api.datasources.ServersDataSource;
@@ -25,7 +26,8 @@ public class ServerAPIPlugin extends JavaPlugin implements JedisConfigLoader, Ma
 
     private final CollectorManager collectorManager = new CollectorManager();
     private ServersDataSource dataSource;
-    private BukkitTask task;
+    private BukkitTask heartbeatTask;
+    private BukkitTask collectorPublisherTask;
     private MainConfiguration configuration;
 
     private final boolean isMultiPaper;
@@ -86,9 +88,12 @@ public class ServerAPIPlugin extends JavaPlugin implements JedisConfigLoader, Ma
         }
         BukkitCollectors.registerAll(collectorManager, this);
 
-        PublishTask publishTask = new PublishTask(this.dataSource, this.collectorManager);
+        HeartbeatTask publishTask = new HeartbeatTask(this.dataSource);
 
-        task = getServer().getScheduler().runTaskTimerAsynchronously(this, publishTask, 0, 20);
+        heartbeatTask = getServer().getScheduler().runTaskTimerAsynchronously(this, publishTask, 0, 20);
+
+        CollectorPublisher collectorPublisher = new CollectorPublisher(collectorManager, dataSource);
+        this.collectorPublisherTask = getServer().getScheduler().runTaskTimerAsynchronously(this, collectorPublisher, 0, 1);
 
     }
 
@@ -96,7 +101,8 @@ public class ServerAPIPlugin extends JavaPlugin implements JedisConfigLoader, Ma
     @Override
     public void onDisable() {
         try {
-            this.task.cancel();
+            this.heartbeatTask.cancel();
+            this.collectorPublisherTask.cancel();
             dataSource.publishHeartBeatDeath();
             if (this.dataSource instanceof AutoCloseable closeable) {
                 closeable.close();
