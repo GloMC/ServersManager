@@ -65,39 +65,6 @@ public abstract class LoadBalancer {
     }
 
     /**
-     * Returns Max number of total online players in this group.
-     * note: Max number depends on servers capacity
-     * for example:
-     *  Server1 have 20 as max
-     *  server2 have 15 as max
-     *  output/total would be 35
-     *
-     * @return max number of Online players that can be online in this group
-     */
-    public int getMaxPlayers() {
-        AtomicInteger integer = new AtomicInteger(0);
-        this.dataSource.getServersData(
-                this.dataSource.getHeartBeatingServers()).forEach((key, value)
-                -> integer.addAndGet(Integer.parseInt(value.get(DataFieldId.MAX_ONLINE.getFieldId()))));
-        return integer.get();
-    }
-
-
-    /**
-     * Returns number of total online players in this group
-     * Note: this can go over max as servers might allow override of max count.
-     * @return number of Online players in this group
-     */
-    public int getCurrentPlayers() {
-        AtomicInteger integer = new AtomicInteger(0);
-        this.dataSource.getServersData(
-                this.dataSource.getHeartBeatingServers()).forEach((key, value)
-                -> integer.addAndGet(Integer.parseInt(value.get(DataFieldId.ONLINE.getFieldId()))));
-        return integer.get();
-    }
-
-
-    /**
      * return the group id of this load balancer which is set by the data source
      *
      * @return groupId set by user in data source
