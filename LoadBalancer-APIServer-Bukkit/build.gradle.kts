@@ -39,7 +39,7 @@ tasks {
     }
 
     shadowJar {
-        relocate("com.github.puregero.multilib", "net.glomc.apis.impl.bukkit.libs.multilib")
+        relocate("com.github.puregero.multilib", "net.glomc.apis.impl.bukkit.libs.multilib");
     }
 
 }
@@ -47,6 +47,6 @@ tasks {
 bukkit {
     load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.STARTUP
     main = "net.glomc.apis.impl.bukkit.loadbalancer.ServerAPIPlugin"
-    apiVersion = "1.19"
-    authors = listOf("Author")
+    apiVersion = "1.13"
+    authors = listOf("Ham1255")
 }
