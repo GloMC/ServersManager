@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("maven-publish")
+    `java-library`
 }
 
 repositories {
@@ -8,9 +9,9 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":LoadBalancer-Common"))
-    implementation(project(":LoadBalancer-API"))
-    implementation("redis.clients:jedis:4.3.1")
+    api(project(":LoadBalancer-Common"))
+    api(project(":LoadBalancer-API"))
+    api("redis.clients:jedis:4.3.1")
 }
 
 publishing {

@@ -1,6 +1,7 @@
 plugins {
     id("java")
     `maven-publish`
+    `java-library`
 }
 
 repositories {
@@ -8,9 +9,8 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":LoadBalancer-Common"))
-    compileOnly("redis.clients:jedis:4.3.1")
-    compileOnly("org.spongepowered:configurate-yaml:3.7.2")
+    api(project(":LoadBalancer-Common"))
+    api(project(":datasources:JedisConfig"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 

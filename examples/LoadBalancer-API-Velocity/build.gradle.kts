@@ -15,10 +15,9 @@ tasks.runVelocity {
 
 
 dependencies {
-    implementation(project(":LoadBalancer-Common"))
     implementation(project(":LoadBalancer-API"))
-    implementation(project(":LoadBalancer-API-DataSources:LoadBalancer-API-JedisDataSource"))
-    implementation("redis.clients:jedis:4.3.1")
+    implementation(project(":datasources:LoadBalancer-API-JedisDataSource"))
+    implementation(project(":datasources:JedisConfig"))
     compileOnly("com.velocitypowered:velocity-api:3.1.1")
     annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
 }

@@ -1,4 +1,4 @@
-package net.glomc.apis.loadbalancer.common.config;
+package net.glomc.apis.loadbalancer.configs.jedis;
 
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public interface RedisConfigLoader {
+public interface JedisConfigLoader {
 
     default void loadRedisConfig(File dataFolder) throws IOException {
         loadRedisConfig(dataFolder.toPath());

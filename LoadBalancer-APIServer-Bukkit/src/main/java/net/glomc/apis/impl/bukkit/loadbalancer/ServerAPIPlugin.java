@@ -1,9 +1,9 @@
 package net.glomc.apis.impl.bukkit.loadbalancer;
 
 import com.github.puregero.multilib.MultiLib;
-import net.glomc.apis.loadbalancer.common.config.RedisConfigLoader;
 import net.glomc.apis.loadbalancer.common.models.HostAndPort;
 import net.glomc.apis.loadbalancer.common.utils.ip.IpChecker;
+import net.glomc.apis.loadbalancer.configs.jedis.JedisConfigLoader;
 import net.glomc.apis.loadbalancer.server.api.CollectorManager;
 import net.glomc.apis.loadbalancer.server.api.PublishTask;
 import net.glomc.apis.loadbalancer.server.api.config.MainConfigLoader;
@@ -21,7 +21,7 @@ import redis.clients.jedis.providers.PooledConnectionProvider;
 import java.io.IOException;
 import java.time.Duration;
 
-public class ServerAPIPlugin extends JavaPlugin implements RedisConfigLoader, MainConfigLoader {
+public class ServerAPIPlugin extends JavaPlugin implements JedisConfigLoader, MainConfigLoader {
 
     private final CollectorManager collectorManager = new CollectorManager();
     private ServersDataSource dataSource;
