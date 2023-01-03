@@ -20,7 +20,7 @@ public class RedisServersDataSource extends ServersDataSource implements AutoClo
     public void publishHeartBeat() {
         unifiedJedis.hset("loadbalancer::" + groupId + "::heartbeats", serverId, String.valueOf(Instant.now().getEpochSecond()));
         // expire data of server after 10 seconds incase death never get called
-        unifiedJedis.expire("loadbalancer::" + groupId + "::data::" + serverId, 10);
+        //unifiedJedis.expire("loadbalancer::" + groupId + "::data::" + serverId, 10);
     }
 
     @Override
