@@ -9,7 +9,7 @@ you could create Implemention on any platform Fabric, forge, sponge etc. fell fr
 
 * Redis
 
-at the momment redis is only supported database but the api got you covered as you can support any database of your choice but you will need to implement it,
+at the moment redis is only supported database but the api got you covered as you can support any database of your choice but you will need to implement it,
 feel free to pr it to the project :)
 
 ## config for Bukkit plugin
