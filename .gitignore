@@ -5,8 +5,8 @@ build/
 !**/src/test/**/build/
 
 ### run task ###
-LoadBalancer-APIServer-Bukkit/run
-examples/LoadBalancer-API-Velocity/run
+LoadBalancer-ServerAPI-Bukkit/run
+examples/LoadBalancer-ProxyAPI-Velocity/run
 ### IntelliJ IDEA ###
 .idea/*
 *.iws

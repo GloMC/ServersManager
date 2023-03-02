@@ -7,10 +7,10 @@ pluginManagement {
 }
 
 rootProject.name = "LoadBalanacer-Parent"
-include("LoadBalancer-API")
-include("examples:LoadBalancer-API-Velocity")
-include("LoadBalancer-APIServer")
+include("LoadBalancer-ProxyAPI")
+include("examples:LoadBalancer-ProxyAPI-Velocity")
+include("LoadBalancer-ServerAPI")
 include("LoadBalancer-Common")
-include("LoadBalancer-APIServer-Bukkit")
-include("datasources:LoadBalancer-API-JedisDataSource")
+include("LoadBalancer-ServerAPI-Bukkit")
+include("datasources:LoadBalancer-ProxyAPI-JedisDataSource")
 include("datasources:JedisConfig")
