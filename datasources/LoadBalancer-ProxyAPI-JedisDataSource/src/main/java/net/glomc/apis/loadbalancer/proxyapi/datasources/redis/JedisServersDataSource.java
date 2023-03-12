@@ -103,4 +103,8 @@ public class JedisServersDataSource extends ServersDataSource implements AutoClo
     public void close() throws Exception {
         this.unifiedJedis.close();
     }
+
+    public UnifiedJedis getUnifiedJedis() {
+        return unifiedJedis;
+    }
 }
