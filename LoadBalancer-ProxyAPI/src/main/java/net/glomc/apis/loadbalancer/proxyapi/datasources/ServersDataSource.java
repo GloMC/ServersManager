@@ -88,7 +88,7 @@ public abstract class ServersDataSource {
      *
      * @return max number of Online players that can be online in this group
      */
-    public int getMaxPlayers() {
+    public long getMaxPlayers() {
         return getMaxPlayers(getServersData(getHeartBeatingServers()));
     }
 
@@ -99,7 +99,7 @@ public abstract class ServersDataSource {
      *
      * @return number of Online players in this group
      */
-    public int getCurrentPlayers() {
+    public long getCurrentPlayers() {
         return getCurrentPlayers(getServersData(getHeartBeatingServers()));
     }
 
@@ -117,7 +117,7 @@ public abstract class ServersDataSource {
      * @see #getServersData(List)
      * @see #getHeartBeatingServers()
      */
-    public int getMaxPlayers(Map<String, Map<String, String>> data) {
+    public long getMaxPlayers(Map<String, Map<String, String>> data) {
         AtomicInteger integer = new AtomicInteger(0);
         data.forEach((key, value)
                 -> integer.addAndGet(Integer.parseInt(value.get(DataFieldId.MAX_ONLINE.getFieldId()))));
@@ -134,7 +134,7 @@ public abstract class ServersDataSource {
      * @see #getServersData(List)
      * @see #getHeartBeatingServers()
      */
-    public int getCurrentPlayers(Map<String, Map<String, String>> data) {
+    public long getCurrentPlayers(Map<String, Map<String, String>> data) {
         AtomicInteger integer = new AtomicInteger(0);
         data.forEach((key, value)
                 -> integer.addAndGet(Integer.parseInt(value.get(DataFieldId.ONLINE.getFieldId()))));
