@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.19.3-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.19.4-R0.1-SNAPSHOT")
     implementation(project(":LoadBalancer-ServerAPI"))
     implementation("com.github.puregero:multilib:1.1.9")
 } 
