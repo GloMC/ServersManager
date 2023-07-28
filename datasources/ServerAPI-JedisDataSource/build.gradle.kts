@@ -1,19 +1,17 @@
 plugins {
-    id("java")
-    `java-library`
     id("maven-publish")
+    `java-library`
 }
-
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    api("org.spongepowered:configurate-yaml:3.7.2")
-    api("redis.clients:jedis:4.4.1")
+    api(project(":common"))
+    api(project(":ServerAPI"))
+    api(project(":datasources:JedisConfig"))
 }
-
 
 publishing {
     publications {

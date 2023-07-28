@@ -1,19 +1,24 @@
 plugins {
-    id("java")
+    `maven-publish`
     `java-library`
-    id("maven-publish")
 }
-
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    api(project(":common"))
     api("org.spongepowered:configurate-yaml:3.7.2")
-    api("redis.clients:jedis:4.4.1")
+
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
 
 publishing {
     publications {
