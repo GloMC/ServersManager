@@ -21,6 +21,21 @@ public class FakeDataSource extends ServersDataSource {
         return list;
     }
 
+    @Override
+    public List<String> getDeadServers() {
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < 3000; i++) {
+            list.add("server-dead-" + i);
+        }
+        list.add(UUID.randomUUID().toString());
+        return list;
+    }
+
+    @Override
+    public void cleanDeadServers(List<String> deadServersIds) {
+
+    }
+
     private final Random random = new Random();
 
     @Override

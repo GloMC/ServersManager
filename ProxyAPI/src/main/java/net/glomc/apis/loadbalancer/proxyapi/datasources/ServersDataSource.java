@@ -39,6 +39,7 @@ public abstract class ServersDataSource {
 
     /**
      * Cleans dead servers That didn't heartbeat
+     *
      * @param deadServersIds dead servers id usually from {@link #getDeadServers()}
      */
     public abstract void cleanDeadServers(List<String> deadServersIds);
@@ -125,30 +126,38 @@ public abstract class ServersDataSource {
      *
      * @param data Servers data if you already have them.
      * @return max number of Online players that can be online in this group
+     * @apiNote Second note: if servers didn't publish their data, see: {@linkplain DataFieldId}, method will just it to zero.
      * @see #getServersData(List)
      * @see #getHeartBeatingServers()
+     * @see DataFieldId
      */
     public long getMaxPlayers(Map<String, Map<String, String>> data) {
         AtomicInteger integer = new AtomicInteger(0);
-        data.forEach((key, value)
-                -> integer.addAndGet(Integer.parseInt(value.get(DataFieldId.MAX_ONLINE.getFieldId()))));
+        data.forEach((key, value) -> {
+            String playersString = value.get(DataFieldId.MAX_ONLINE.getFieldId());
+            integer.addAndGet(Integer.parseInt(playersString != null ? playersString : "0"));
+        });
         return integer.get();
     }
 
 
     /**
      * Returns number of total online players in this group
-     * Note: this can go over max as servers might allow override of max count.
      *
      * @param data Servers data if you already have them.
      * @return number of Online players in this group
+     * @apiNote Note: this can go over max as servers might allow override of max count.
+     * @apiNote Second note: if servers didn't publish their data, see: {@linkplain DataFieldId}, method will just it to zero.
      * @see #getServersData(List)
      * @see #getHeartBeatingServers()
+     * @see DataFieldId
      */
     public long getCurrentPlayers(Map<String, Map<String, String>> data) {
         AtomicInteger integer = new AtomicInteger(0);
-        data.forEach((key, value)
-                -> integer.addAndGet(Integer.parseInt(value.get(DataFieldId.ONLINE.getFieldId()))));
+        data.forEach((key, value) -> {
+            String playersString = value.get(DataFieldId.ONLINE.getFieldId());
+            integer.addAndGet(Integer.parseInt(playersString != null ? playersString : "0"));
+        });
         return integer.get();
     }
 
