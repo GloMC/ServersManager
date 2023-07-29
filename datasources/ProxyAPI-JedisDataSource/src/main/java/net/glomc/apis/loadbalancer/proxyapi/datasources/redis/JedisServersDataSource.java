@@ -1,7 +1,5 @@
 package net.glomc.apis.loadbalancer.proxyapi.datasources.redis;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import net.glomc.apis.loadbalancer.common.models.HostAndPort;
 import net.glomc.apis.loadbalancer.proxyapi.datasources.ServersDataSource;
 import redis.clients.jedis.*;
@@ -13,15 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public class JedisServersDataSource extends ServersDataSource implements AutoCloseable {
 
     private final UnifiedJedis unifiedJedis;
     private final ClusterConnectionProvider clusterConnectionProvider;
-
-    private final Cache<String, Map<String, String>> cache = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.SECONDS).build();
 
     public JedisServersDataSource(String groupId, UnifiedJedis unifiedJedis, ClusterConnectionProvider clusterConnectionProvider) {
         super(groupId);
@@ -48,12 +42,7 @@ public class JedisServersDataSource extends ServersDataSource implements AutoClo
 
     @Override
     public List<String> getHeartBeatingServers() {
-        Map<String, String> heartbeats = null;
-        try {
-            heartbeats = this.cache.get("heartbeats", () -> unifiedJedis.hgetAll("loadbalancer::" + groupId + "::heartbeats"));
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+        Map<String, String> heartbeats = unifiedJedis.hgetAll("loadbalancer::" + groupId + "::heartbeats");
         ArrayList<String> aliveServers = new ArrayList<>();
         heartbeats.forEach((server, heartbeat) -> {
             // consider servers that their heartbeat after 10 seconds dead
@@ -69,12 +58,7 @@ public class JedisServersDataSource extends ServersDataSource implements AutoClo
 
     @Override
     public List<String> getDeadServers() {
-        Map<String, String> heartbeats = null;
-        try {
-            heartbeats = this.cache.get("heartbeats", () -> unifiedJedis.hgetAll("loadbalancer::" + groupId + "::heartbeats"));
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+        Map<String, String> heartbeats = unifiedJedis.hgetAll("loadbalancer::" + groupId + "::heartbeats");
         ArrayList<String> deadServers = new ArrayList<>();
         heartbeats.forEach((server, heartbeat) -> {
             // see note on getHeatBeatingServers
