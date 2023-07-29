@@ -37,9 +37,9 @@ public record HostAndPort(String host, int port) {
     /**
      * Converts this object into a Map
      */
-    public Map<String, String> convertIntoMap() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put(FieldId.PORT.fieldId, String.valueOf(port));
+    public Map<String, Object> convertIntoMap() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(FieldId.PORT.fieldId, port);
         map.put(FieldId.HOST.fieldId, host);
         return Collections.unmodifiableMap(map);
     }
@@ -52,14 +52,14 @@ public record HostAndPort(String host, int port) {
      * @see #convertIntoMap()
      * @throws IllegalArgumentException if map does not contain requiered data
      */
-    public static HostAndPort fromMap(Map<String, String> map) {
+    public static HostAndPort fromMap(Map<String, Object> map) {
         // checking if map is valid
         for (FieldId field : FieldId.values()) {
             if (!map.containsKey(field.getFieldId())) {
                 throw new IllegalArgumentException("Provided map is invalid");
             }
         }
-        return new HostAndPort(map.get(FieldId.HOST.getFieldId()), Integer.parseInt(map.get(FieldId.PORT.fieldId)));
+        return new HostAndPort((String) map.get(FieldId.HOST.getFieldId()), (Integer) map.get(FieldId.PORT.fieldId));
     }
 
     public InetSocketAddress convertIntoINetSocketAddress() {

@@ -51,7 +51,7 @@ public abstract class ServersDataSource {
      * @return Returns a Map with Servers ids as key and inside it A second map which contains data.
      * @see #getHeartBeatingServers()
      */
-    public abstract Map<String, Map<String, String>> getServersData(List<String> serversIds);
+    public abstract Map<String, Map<String, Object>> getServersData(List<String> serversIds);
 
     /**
      * Returns data set by the server provided by you
@@ -59,7 +59,7 @@ public abstract class ServersDataSource {
      * @param server a single server
      * @return Returns a Map which contains data.
      */
-    public abstract Map<String, String> getServerData(String server);
+    public abstract Map<String, Object> getServerData(String server);
 
     /**
      * Returns single data instead of whole data about a server
@@ -69,7 +69,7 @@ public abstract class ServersDataSource {
      * @return Returns a value instead of a map
      * @see DataFieldId
      */
-    public String getSingleServerData(String serverId, DataFieldId dataFieldId) {
+    public Object getSingleServerData(String serverId, DataFieldId dataFieldId) {
         return getSingleServerData(serverId, dataFieldId.getFieldId());
     }
 
@@ -80,7 +80,7 @@ public abstract class ServersDataSource {
      * @param fieldName field name
      * @return Returns a value instead of a map
      */
-    public abstract String getSingleServerData(String serverId, String fieldName);
+    public abstract Object getSingleServerData(String serverId, String fieldName);
 
     /**
      * return the server host
@@ -131,11 +131,11 @@ public abstract class ServersDataSource {
      * @see #getHeartBeatingServers()
      * @see DataFieldId
      */
-    public long getMaxPlayers(Map<String, Map<String, String>> data) {
+    public long getMaxPlayers(Map<String, Map<String, Object>> data) {
         AtomicInteger integer = new AtomicInteger(0);
         data.forEach((key, value) -> {
-            String playersString = value.get(DataFieldId.MAX_ONLINE.getFieldId());
-            integer.addAndGet(Integer.parseInt(playersString != null ? playersString : "0"));
+            Integer number = (Integer) value.get(DataFieldId.MAX_ONLINE.getFieldId());
+            integer.addAndGet(number != null ? number : 0);
         });
         return integer.get();
     }
@@ -152,11 +152,11 @@ public abstract class ServersDataSource {
      * @see #getHeartBeatingServers()
      * @see DataFieldId
      */
-    public long getCurrentPlayers(Map<String, Map<String, String>> data) {
+    public long getCurrentPlayers(Map<String, Map<String, Object>> data) {
         AtomicInteger integer = new AtomicInteger(0);
         data.forEach((key, value) -> {
-            String playersString = value.get(DataFieldId.ONLINE.getFieldId());
-            integer.addAndGet(Integer.parseInt(playersString != null ? playersString : "0"));
+            Integer number = (Integer) value.get(DataFieldId.ONLINE.getFieldId());
+            integer.addAndGet(number != null ? number : 0);
         });
         return integer.get();
     }

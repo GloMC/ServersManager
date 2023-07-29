@@ -19,13 +19,9 @@ public abstract class ServersDataSource {
 
     public abstract void publishHeartBeat();
 
-    public abstract void publishHeartBeatDeath();
+    public abstract void publishDeath();
 
-    public abstract void publishData(Map<String, String> data);
-
-    public abstract void publishData(String field, String data);
-
-    public abstract void publishHostAndPort();
+    public abstract void publishData(Map<String, Object> data);
 
     public String serverId() {
         return serverId;

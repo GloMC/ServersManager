@@ -30,7 +30,7 @@ public abstract class LoadBalancer {
      * @see LoadBalancer#bestServer()
      * @see net.glomc.apis.loadbalancer.common.enums.DataFieldId
      */
-    protected abstract String bestServer(Map<String, Map<String, String>> serverData);
+    protected abstract String bestServer(Map<String, Map<String, Object>> serverData);
 
     /**
      * You would call this method to get the best server id

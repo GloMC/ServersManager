@@ -10,7 +10,7 @@ repositories {
 dependencies {
     api(project(":common"))
     api(project(":ServerAPI"))
-    api(project(":datasources:JedisConfig"))
+    api(project(":datasources:Jedis-Common"))
 }
 
 publishing {

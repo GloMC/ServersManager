@@ -14,15 +14,15 @@ public class LowCountBalancerSystem extends LoadBalancer {
     }
 
     @Override
-    protected String bestServer(Map<String, Map<String, String>> data) {
+    protected String bestServer(Map<String, Map<String, Object>> data) {
         String bestServer = null;
         Integer lastCount = null;
 
-        for (Map.Entry<String, Map<String, String>> stringMapEntry : data.entrySet()) {
+        for (Map.Entry<String, Map<String, Object>> stringMapEntry : data.entrySet()) {
             String server = stringMapEntry.getKey();
-            Map<String, String> serverData = stringMapEntry.getValue();
-            int count = Integer.parseInt(serverData.get(DataFieldId.ONLINE.getFieldId()));
-            int maxCount = Integer.parseInt(serverData.get(DataFieldId.MAX_ONLINE.getFieldId()));
+            Map<String, Object> serverData = stringMapEntry.getValue();
+            int count = (int) serverData.get(DataFieldId.ONLINE.getFieldId());
+            int maxCount = (int) serverData.get(DataFieldId.MAX_ONLINE.getFieldId());
             if (lastCount == null) {
                 if (count != maxCount) {
                     lastCount = count;

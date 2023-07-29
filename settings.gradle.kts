@@ -14,6 +14,5 @@ include("ServerAPI")
 
 // redis data source
 include("datasources:ProxyAPI-JedisDataSource")
-include("datasources:JedisConfig")
+include("datasources:Jedis-Common")
 include("datasources:ServerAPI-JedisDataSource")
-findProject(":datasources:ServerAPI-JedisDataSource")?.name = "ServerAPI-JedisDataSource"

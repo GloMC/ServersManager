@@ -13,7 +13,17 @@ public class CollectorManager {
     private final ConcurrentHashMap<String, DataCollector> collectors = new ConcurrentHashMap<>();
     private final Logger logger = Logger.getLogger("CollectorManager");
 
+    public void registerDefaultCollector(DataFieldId dataFieldId, DataCollector dataCollector) {
+        Object objectTest = dataCollector.collect();
+        if (objectTest.getClass() != dataFieldId.type()) {
+            throw new IllegalStateException("collector has wrong return type for " + dataFieldId);
+        }
+        this.register(dataFieldId.getFieldId(), dataCollector);
+    }
+
+
     public boolean register(String fieldId, DataCollector dataCollector) {
+
         fieldId = fieldId.toLowerCase(Locale.ROOT);
         if (!collectors.containsKey(fieldId)) {
             collectors.put(fieldId, dataCollector);
@@ -45,8 +55,8 @@ public class CollectorManager {
         }
     }
 
-    public Map<String, String> collect() {
-        HashMap<String, String> data = new HashMap<>();
+    public Map<String, Object> collect() {
+        HashMap<String, Object> data = new HashMap<>();
         collectors.forEach(((fieldId, dataCollector) -> data.put(fieldId, dataCollector.collect())));
         return Collections.unmodifiableMap(data);
     }
