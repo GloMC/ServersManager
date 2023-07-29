@@ -10,6 +10,8 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class JedisServersDataSource extends ServersDataSource implements Runnable, AutoCloseable {
 
@@ -23,9 +25,15 @@ public class JedisServersDataSource extends ServersDataSource implements Runnabl
 
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
 
-    public JedisServersDataSource(String groupId, UnifiedJedis unifiedJedis) {
+    private final BiConsumer<String, HostAndPort> addServerConsumer;
+    private final Consumer<String> removeServerConsumer;
+
+
+    public JedisServersDataSource(String groupId, UnifiedJedis unifiedJedis, BiConsumer<String, HostAndPort> addServerConsumer, Consumer<String> removeServerConsumer) {
         super(groupId);
         this.unifiedJedis = unifiedJedis;
+        this.addServerConsumer = addServerConsumer;
+        this.removeServerConsumer = removeServerConsumer;
     }
 
     @Override
@@ -58,10 +66,11 @@ public class JedisServersDataSource extends ServersDataSource implements Runnabl
 
     @Override
     public void cleanDeadServers(List<String> deadServersIds) {
-        for (String deadServersId : deadServersIds) {
-            this.serversData.remove(deadServersId);
-            this.serversHostAndPort.remove(deadServersId);
-            this.heartBeats.remove(deadServersId);
+        for (String deadServerId : deadServersIds) {
+            this.serversData.remove(deadServerId);
+            this.serversHostAndPort.remove(deadServerId);
+            this.heartBeats.remove(deadServerId);
+            this.removeServerConsumer.accept(deadServerId);
         }
     }
 
@@ -107,10 +116,16 @@ public class JedisServersDataSource extends ServersDataSource implements Runnabl
 
         private final ConcurrentHashMap<String, HostAndPort> serversHostAndPort;
 
-        public PubSubHandler(ConcurrentHashMap<String, Long> heartBeats, ConcurrentHashMap<String, Map<String, Object>> serversData, ConcurrentHashMap<String, HostAndPort> serversHostAndPort) {
+        private final BiConsumer<String, HostAndPort> addServerConsumer;
+        private final Consumer<String> removeServerConsumer;
+
+        public PubSubHandler(ConcurrentHashMap<String, Long> heartBeats, ConcurrentHashMap<String, Map<String, Object>> serversData, ConcurrentHashMap<String, HostAndPort> serversHostAndPort, BiConsumer<String, HostAndPort> addServerConsumer, Consumer<String> removeServerConsumer) {
             this.heartBeats = heartBeats;
             this.serversData = serversData;
             this.serversHostAndPort = serversHostAndPort;
+            this.addServerConsumer = addServerConsumer;
+            this.removeServerConsumer = removeServerConsumer;
+
         }
 
         @Override
@@ -118,11 +133,16 @@ public class JedisServersDataSource extends ServersDataSource implements Runnabl
             JSONObject data = new JSONObject(message);
             String serverId = data.getString("server-id");
             if (data.getString("type").equals("heartbeat")) {
+                HostAndPort hostAndPort = HostAndPort.fromMap(data.getJSONObject("host-port").toMap());
+                if (!heartBeats.containsKey(serverId)) { // when added for the event
+                    this.addServerConsumer.accept(serverId, hostAndPort);
+                }
                 heartBeats.put(serverId, Instant.now().getEpochSecond());
-                serversHostAndPort.put(serverId, HostAndPort.fromMap(data.getJSONObject("host-port").toMap()));
+                serversHostAndPort.put(serverId, hostAndPort);
             } else if (data.getString("type").equals("data")) {
                 serversData.put(serverId, data.getJSONObject("data").toMap());
             } else if (data.getString("type").equals("death")) {
+                this.removeServerConsumer.accept(serverId);
                 this.serversData.remove(serverId);
                 this.serversHostAndPort.remove(serverId);
                 this.heartBeats.remove(serverId);
@@ -134,7 +154,7 @@ public class JedisServersDataSource extends ServersDataSource implements Runnabl
     public void run() {
         while (!isClosed.get()) {
             try {
-                this.unifiedJedis.subscribe(new PubSubHandler(heartBeats, serversData, serversHostAndPort), (getGroupId() + "-proxies"));
+                this.unifiedJedis.subscribe(new PubSubHandler(heartBeats, serversData, serversHostAndPort, this.addServerConsumer, this.removeServerConsumer), (getGroupId() + "-proxies"));
             } catch (Throwable t) {
                 // t.printStackTrace();
                 try {
