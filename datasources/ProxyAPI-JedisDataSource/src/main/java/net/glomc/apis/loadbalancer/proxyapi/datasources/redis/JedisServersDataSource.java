@@ -46,7 +46,7 @@ public class JedisServersDataSource extends ServersDataSource implements AutoClo
         ArrayList<String> aliveServers = new ArrayList<>();
         heartbeats.forEach((server, heartbeat) -> {
             // consider servers that their heartbeat after 10 seconds dead
-            // servers should remove their heartbeat on shutdown automaticlly but this for dead servers
+            // servers should remove their heartbeat on shutdown automatically but this for dead servers
             // that never reached the shutdown process like exited or killed.
             if (!(Instant.now().getEpochSecond() - Long.parseLong(heartbeat) > 10)) {
                 aliveServers.add(server);
@@ -72,9 +72,26 @@ public class JedisServersDataSource extends ServersDataSource implements AutoClo
 
     @Override
     public void cleanDeadServers(List<String> deadServersIds) {
-        unifiedJedis.hdel("loadbalancer::" + groupId + "::heartbeats", deadServersIds.toArray(new String[]{}));
+        if (unifiedJedis instanceof JedisPooled pooled) {
+            try (Connection connection = pooled.getPool().getResource()) {
+                Pipeline pipeline = new Pipeline(connection);
+                deadServersIds.forEach((serverId) -> {
+                    pipeline.hdel("loadbalancer::" + getGroupId() + "::heartbeats", serverId);
+                    pipeline.del("loadbalancer::" + getGroupId() + "::data::" + serverId);
+                    pipeline.del("loadbalancer::" + getGroupId() + "::intetnert_protocol::" + serverId);
+                });
+                pipeline.sync();
+            }
+        } else if (unifiedJedis instanceof JedisCluster) {
+            ClusterPipeline clusterPipeline = new ClusterPipeline(clusterConnectionProvider);
+            deadServersIds.forEach((serverId) -> {
+                clusterPipeline.hdel("loadbalancer::" + getGroupId() + "::heartbeats", serverId);
+                clusterPipeline.del("loadbalancer::" + getGroupId() + "::data::" + serverId);
+                clusterPipeline.del("loadbalancer::" + getGroupId() + "::intetnert_protocol::" + serverId);
+            });
+            clusterPipeline.sync();
+        }
     }
-
 
     @Override
     public Map<String, Map<String, String>> getServersData(List<String> serversIds) {
