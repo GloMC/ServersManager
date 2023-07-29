@@ -90,6 +90,13 @@ public class JedisServersDataSource extends ServersDataSource implements AutoClo
                 clusterPipeline.del("loadbalancer::" + getGroupId() + "::intetnert_protocol::" + serverId);
             });
             clusterPipeline.sync();
+        } else {
+            deadServersIds.forEach((serverId) -> {
+                unifiedJedis.hdel("loadbalancer::" + getGroupId() + "::heartbeats", serverId);
+                unifiedJedis.del("loadbalancer::" + getGroupId() + "::data::" + serverId);
+                unifiedJedis.del("loadbalancer::" + getGroupId() + "::intetnert_protocol::" + serverId);
+            });
+
         }
     }
 
@@ -114,6 +121,10 @@ public class JedisServersDataSource extends ServersDataSource implements AutoClo
             }
             clusterPipeline.sync();
             responseHashMap.forEach((serverId, response) -> data.put(serverId, response.get()));
+        } else {
+            for (String serverId : serversIds) {
+                data.put(serverId, unifiedJedis.hgetAll("loadbalancer::" + groupId + "::data::" + serverId));
+            }
         }
 
         return data;

@@ -52,6 +52,10 @@ public class RedisServersDataSource extends ServersDataSource implements AutoClo
             clusterPipeline.del("loadbalancer::" + groupId() + "::data::" + serverId());
             clusterPipeline.del("loadbalancer::" + groupId() + "::intetnert_protocol::" + serverId());
             clusterPipeline.sync();
+        } else {
+            unifiedJedis.hdel("loadbalancer::" + groupId() + "::heartbeats", serverId());
+            unifiedJedis.del("loadbalancer::" + groupId() + "::data::" + serverId());
+            unifiedJedis.del("loadbalancer::" + groupId() + "::intetnert_protocol::" + serverId());
         }
     }
 
