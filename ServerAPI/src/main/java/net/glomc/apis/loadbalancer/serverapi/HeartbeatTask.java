@@ -1,21 +1,23 @@
 package net.glomc.apis.loadbalancer.serverapi;
 
-import net.glomc.apis.loadbalancer.serverapi.datasources.ServersDataSource;
+import net.glomc.apis.loadbalancer.serverapi.publisher.ServerDataPublisher;
 
+/**
+ * just runnable task calling {@link ServerDataPublisher#publishHeartBeat()}
+ */
 public class HeartbeatTask implements Runnable {
 
     public static final long REPEAT = 1;
 
+    private final ServerDataPublisher publisher;
 
-    private final ServersDataSource dataSource;
-
-    public HeartbeatTask(ServersDataSource dataSource) {
-        this.dataSource = dataSource;
+    public HeartbeatTask(ServerDataPublisher publisher) {
+        this.publisher = publisher;
     }
 
     @Override
     public void run() {
-        dataSource.publishHeartBeat();
+        publisher.publishHeartBeat();
     }
 
 }

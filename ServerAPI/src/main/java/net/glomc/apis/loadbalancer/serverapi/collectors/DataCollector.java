@@ -1,7 +1,12 @@
 package net.glomc.apis.loadbalancer.serverapi.collectors;
 
-public abstract class DataCollector {
-
-    public abstract Object collect();
+/**
+ * this just returns the data collected by {@link CollectorManager}
+ */
+public abstract class DataCollector<T> {
+    /**
+     * @return any data java type
+     */
+    public abstract T collect();
 
 }

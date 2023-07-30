@@ -1,6 +1,6 @@
 package net.glomc.apis.loadbalancer.proxyapi;
 
-import net.glomc.apis.loadbalancer.proxyapi.datasources.ServersDataSource;
+import net.glomc.apis.loadbalancer.proxyapi.serversmanager.ServersManager;
 import net.glomc.apis.loadbalancer.common.models.HostAndPort;
 
 import java.util.Map;
@@ -11,14 +11,14 @@ import java.util.Map;
  * @since 1.0.0
  */
 public abstract class LoadBalancer {
-    protected final ServersDataSource dataSource;
+    protected final ServersManager manager;
 
     /**
-     * @param dataSource The Datasource
-     * @see ServersDataSource
+     * @param manager The manager
+     * @see ServersManager
      */
-    public LoadBalancer(ServersDataSource dataSource) {
-        this.dataSource = dataSource;
+    public LoadBalancer(ServersManager manager) {
+        this.manager = manager;
     }
 
 
@@ -40,34 +40,20 @@ public abstract class LoadBalancer {
      */
     public String bestServer() {
         try {
-            return bestServer(dataSource.getServersData(dataSource.getHeartBeatingServers()));
+            return bestServer(manager.getServersData(manager.getServers()));
         } catch (Exception e) {
             throw new RuntimeException("Problem selecting the best server", e);
         }
     }
 
-    /**
-     * return the server host
-     *
-     * @return HostAndPort can be null
-     * @see HostAndPort
-     */
-    public HostAndPort getServerHostAndPort(String server) {
-        try {
-            return dataSource.getServerHostAndPort(server);
-        } catch (Exception e) {
-            throw new RuntimeException("Problem fetching server host and port", e);
-        }
-
-    }
 
     /**
      * return the group id of this load balancer which is set by the data source
      *
      * @return groupId set by user in data source
-     * @see ServersDataSource
+     * @see ServersManager
      */
-    public String getGroupId() {
-        return dataSource.getGroupId();
+    public String groupId() {
+        return manager.groupId();
     }
 }

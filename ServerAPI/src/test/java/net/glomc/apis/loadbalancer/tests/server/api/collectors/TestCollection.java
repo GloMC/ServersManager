@@ -13,28 +13,23 @@ public class TestCollection {
 
     @Test
     public void testCollection() {
-        Assertions.assertThrowsExactly(IllegalStateException.class, () -> collectorManager.testNeededFields(true));
-        collectorManager.register(DataFieldId.ONLINE.getFieldId(), new DataCollector() {
+        Assertions.assertThrowsExactly(IllegalStateException.class, collectorManager::collect);
+        collectorManager.register(DataFieldId.ONLINE, new DataCollector<Integer>() {
             @Override
-            public String collect() {
-                return "15";
+            public Integer collect() {
+                return 15;
             }
         });
-        collectorManager.register(DataFieldId.MAX_ONLINE.getFieldId(), new DataCollector() {
+        Assertions.assertThrowsExactly(IllegalStateException.class, collectorManager::collect);
+        collectorManager.register(DataFieldId.MAX_ONLINE, new DataCollector<Integer>() {
             @Override
-            public String collect() {
-                return "30";
+            public Integer collect() {
+                return 15;
             }
         });
-        collectorManager.testNeededFields(true);
         System.out.println("COLLECTING.....");
         collectorManager.collect().forEach((fieldId, data) -> System.out.println(fieldId + ": " + data));
-        for (DataFieldId value : DataFieldId.values()) {
-            collectorManager.unRegister(value.getFieldId());
-        }
-        Assertions.assertThrowsExactly(IllegalStateException.class, () -> collectorManager.testNeededFields(true));
     }
-
 
 
 }

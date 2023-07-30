@@ -1,18 +1,18 @@
 package net.glomc.apis.loadbalancer.proxyapi.tests.datasources;
 
-import net.glomc.apis.loadbalancer.proxyapi.datasources.ServersDataSource;
+import net.glomc.apis.loadbalancer.proxyapi.serversmanager.ServersManager;
 import net.glomc.apis.loadbalancer.common.models.HostAndPort;
 
 import java.util.*;
 
-public class FakeDataSource extends ServersDataSource {
+public class FakeDataSource extends ServersManager {
 
     public FakeDataSource(String groupId) {
         super(groupId);
     }
 
     @Override
-    public List<String> getHeartBeatingServers() {
+    public List<String> getServers() {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < 3000; i++) {
             list.add("server-" + i);

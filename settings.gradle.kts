@@ -13,6 +13,6 @@ include("ServerAPI")
 
 
 // redis data source
-include("datasources:ProxyAPI-JedisDataSource")
-include("datasources:Jedis-Common")
-include("datasources:ServerAPI-JedisDataSource")
+include("managers:ProxyAPI-JedisServersManager")
+include("managers:Jedis-Common")
+include("managers:ServerAPI-JedisServerDataPublisher")
