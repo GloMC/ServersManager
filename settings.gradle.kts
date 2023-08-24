@@ -1,4 +1,4 @@
-rootProject.name = "LoadBalanacer-Parent"
+rootProject.name = "ServersManager-Parent"
 
 pluginManagement {
     repositories {

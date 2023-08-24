@@ -1,6 +1,7 @@
-# LoadBalancer
+# Servers manager
 
-This is an API that help you with load balancing or even matchmaking.
+this api used to automate adding servers on the proxy during runtime without hassle
+and with simple load balancing
 
 # Todo
 * RedisBungee
